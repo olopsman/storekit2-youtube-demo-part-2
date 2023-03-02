@@ -6,16 +6,27 @@
 //
 
 import SwiftUI
+import StoreKit
 
 struct ContentView: View {
+    @StateObject var storeVM = StoreVM()
     var body: some View {
         VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundColor(.accentColor)
-            Text("Hello, world!")
+            // what the fuck is this
+            if let subscriptionGroupStatus = storeVM.subscriptionGroupStatus {
+                if subscriptionGroupStatus == .expired || subscriptionGroupStatus == .revoked {
+                    Text("Welcome back, give the subscription another try.")
+                    //display products
+                }
+            }
+            if storeVM.purchasedSubscriptions.isEmpty {
+                SubscriptionView()
+                
+            } else {
+                Text("Premium Content")
+            }
         }
-        .padding()
+        .environmentObject(storeVM)
     }
 }
 
